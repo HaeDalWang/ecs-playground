@@ -8,10 +8,3 @@ locals {
     "project" = "${local.project}"
   }
 }
-
-# App 배열을 만들어서 ECR, CI/CD pipeline에 적용
-locals {
-  app = [
-    "env-loader",
-  ]
-}
