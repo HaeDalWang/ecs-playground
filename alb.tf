@@ -64,6 +64,14 @@ module "alb" {
         target_group_key = "ecs"
       }
     }
+    https = {
+      port     = 443
+      protocol = "HTTPS"
+      certificate_arn = aws_acm_certificate.project.arn
+      forward = {
+        target_group_key = "ecs"
+      }
+    }
   }
 
   # Target Group

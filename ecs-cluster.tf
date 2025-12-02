@@ -19,23 +19,34 @@ module "ecs_cluster" {
       auto_scaling_group_arn         = module.autoscaling.autoscaling_group_arn
       managed_termination_protection = "DISABLED"
 
+      # ECS Cluster Auto Scaling 설정
+      # managed_scaling은 ECS가 ASG의 스케일링을 자동으로 관리하는 옵션입니다.
       managed_scaling = {
-        status                    = "ENABLED"
-        target_capacity           = 100
+        # ENABLED: ECS가 CloudWatch 메트릭을 기반으로 ASG의 DesiredCapacity를 자동 조정
+        status = "ENABLED"
+
+        # 목표 용량 사용률 (0-100%)
+        # 100%: 모든 인스턴스가 최대한 활용될 때까지 스케일 아웃 (비용 효율적, 하지만 새 태스크가 PENDING 상태일 수 있음)
+        # 50%: 인스턴스 사용률이 50%를 유지하도록 스케일링 (여유 용량 확보, 빠른 배포 가능, 비용 증가)
+        target_capacity = 100
+
+        # 한 번에 스케일 아웃할 수 있는 최소 인스턴스 수
         minimum_scaling_step_size = 1
+        # 한 번에 스케일 아웃할 수 있는 최대 인스턴스 수 (10000 = 제한 없음 (기본값))
         maximum_scaling_step_size = 10000
       }
 
+      # 별도 명시가 없을 경우 기본적으로 Service의 적용되는 업그레이드 전략
       default_capacity_provider_strategy = {
+        # weight: 용량 제공자 간 작업 분배 비율 (0-1000)
+        # weight=100, 다른 용량 제공자가 없으면 모든 작업이 이 용량 제공자에 배치됨
         weight = 100
-        base   = 1
+        # 항상 유지할 최소 Task 수
+        base = 1
       }
     }
   }
-
-  # Services는 별도 파일에서 관리하므로 여기서는 생성하지 않음
-  services = {}
-
+  
   tags = local.tags
 }
 
