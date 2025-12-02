@@ -54,16 +54,20 @@ module "alb" {
 
   enable_deletion_protection = false
 
-  # HTTP Listener
+  # HTTP Listener - HTTPS로 리다이렉트
   listeners = {
+    # HTTP(80) -> HTTPS(443) 리다이렉트
+    # redirect와 forward를 동시에 지정할 수 없으므로 redirect만 사용
     http = {
       port     = 80
       protocol = "HTTP"
-
-      forward = {
-        target_group_key = "ecs"
+      redirect = {
+        port        = "443"
+        protocol    = "HTTPS"
+        status_code = "HTTP_301"
       }
     }
+    # HTTPS Listener - Target Group으로 포워딩
     https = {
       port     = 443
       protocol = "HTTPS"
