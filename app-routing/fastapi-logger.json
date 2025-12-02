@@ -1,0 +1,18 @@
+{
+  "app_name": "fastapi-logger",
+  "target_group_key": "fastapi-logger",
+  "host_header": [],
+  "path_patterns": ["/log/*"],
+  "priority": 100,
+  "health_check": {
+    "enabled": true,
+    "healthy_threshold": 2,
+    "unhealthy_threshold": 2,
+    "timeout": 5,
+    "interval": 30,
+    "path": "/health",
+    "protocol": "HTTP",
+    "matcher": "200"
+  }
+}
+

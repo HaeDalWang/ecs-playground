@@ -1,0 +1,15 @@
+{
+  "name": "fastapi-logger",
+  "image": "863422182520.dkr.ecr.ap-northeast-2.amazonaws.com/fastapi-logger:latest",
+  "container_name": "fastapi-logger",
+  "container_port": 8000,
+  "cpu": 128,
+  "memory": 256,
+  "desired_count": 2,
+  "deployment_minimum_healthy_percent": 50,
+  "deployment_maximum_percent": 200,
+  "health_check_grace_period_seconds": 60,
+  "environment": [],
+  "description": "FastAPI Logger Service"
+}
+
